@@ -5,7 +5,7 @@ import item from '@/models/item';
 export async function GET() {
   await connectDB(); // ✅ FIXED!
 
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = 'https://www.starxmovies.in';
   const movies = await item.find({}, 'slug updatedAt');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

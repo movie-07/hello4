@@ -1,26 +1,30 @@
 import mongoose from 'mongoose';
 
-const itemSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: String,
-  tags: [String],
-  img1: String,
-  img2: String,
-  img3: String,
-  downloadLink: String, // Ensure this matches the request field or remap in POST
-  runtime: String,
-  language: String,
-  date: String,
-  rating: Number, // Changed from String to Number
-  genre: [String],
-  slug: {
-    type: String,
-    required: true,
-    unique: true,
-  }
-}, { timestamps: true });
+const itemSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    description: String,
+    tags: [String],
+    img1: String,
+    img2: String,
+    img3: String,
+    downloadLink: String,
+    runtime: String,
+    language: String,
+    date: String,
+    rating: Number,
+    genre: [String],
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true, // Ensure it's indexed for faster lookup
+    },
+  },
+  { timestamps: true }
+);
 
-// Auto-generate slug if missing
+// Auto-generate slug if missing or title is modified
 itemSchema.pre('save', async function (next) {
   if (!this.isModified('title')) return next();
 
@@ -34,6 +38,7 @@ itemSchema.pre('save', async function (next) {
 
   const Item = mongoose.models.Item;
 
+  // Only check for uniqueness if it's a new document
   while (await Item.findOne({ slug })) {
     slug = `${baseSlug}-${count++}`;
   }

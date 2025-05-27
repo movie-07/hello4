@@ -44,7 +44,7 @@ export default async function MovieRoute({ searchParams }) {
               url: "https://www.yoursite.com",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "hhttps://starxmovies.in/search?q={search_term_string}",
+                target: "https://starxmovies.in/search?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),
